@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 
 def _tfr_from_mt_old(x_mt, weights):
     weights = weights[np.newaxis, :, :, np.newaxis]
@@ -29,15 +28,17 @@ weights = np.random.rand(n_tapers, n_freqs)
 result_old = _tfr_from_mt_old(x_mt, weights)
 result_new = _tfr_from_mt_new(x_mt, weights)
 
-print("non-epoched data shape:", result_new.shape)
+print("non-epoched data shape using the old version:", result_old.shape)
+print("non-epoched data shape using the new version:", result_new.shape)
 
 # epoched data
 n_epochs = 4
 x_mt_epoched = random_data((n_epochs, n_channels, n_tapers, n_freqs, n_times))
 
 # compare
-result_old_epoched = np.array([_tfr_from_mt_old(epo_x, weights) for epo_x in x_mt_epoched])
-result_new_epoched = _tfr_from_mt_new(x_mt_epoched, weights)
+result_old = np.array([_tfr_from_mt_old(epo_x, weights) for epo_x in x_mt_epoched])
+result_new = _tfr_from_mt_new(x_mt_epoched, weights)
 
-print("epoched data shape:", result_new_epoched.shape)
+print("epoched data shape using the old version:", result_old.shape)
+print("epoched data shape using the new version:", result_new.shape)
 
